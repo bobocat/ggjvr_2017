@@ -12,7 +12,13 @@ public class Follow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.position = VRTK.VRTK_DeviceFinder.HeadsetTransform().position;
+        try
+        {
+            transform.position = VRTK.VRTK_DeviceFinder.HeadsetTransform().position;
+            transform.rotation = VRTK.VRTK_DeviceFinder.HeadsetTransform().rotation;
+        }
+        catch { }
+
 
     }
 

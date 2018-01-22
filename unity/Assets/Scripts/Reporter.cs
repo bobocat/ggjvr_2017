@@ -47,7 +47,11 @@ public class Reporter : MonoBehaviour {
 
         if (offset >= GOList.Length) offset = GOList.Length;
 
-        text = "headset: " + VRTK.VRTK_DeviceFinder.HeadsetTransform().position;
+        try
+        {
+            text = "headset: " + VRTK.VRTK_DeviceFinder.HeadsetTransform().position;
+        }
+        catch { }
 
         textField.text = text;
 	}
