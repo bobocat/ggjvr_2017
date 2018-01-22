@@ -15,6 +15,9 @@ public class Sensor : MonoBehaviour {
     private float lookAtStart = 0f;         // when did they start looking at this sensor
     private bool beingLookedAt = false;     // are we being looked at?
     private float lookAtTimePassed = 0f;    // how long have we been looked at?
+    public float timeBetweenLooks = 3f;     // how long after a look has finished can we register another look?
+    private float timeOfLastLook = 0f;      // when was our last look completed?
+
     public UnityEvent lookedAt;
 
     public UnityEvent grabbed;
@@ -22,8 +25,10 @@ public class Sensor : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
-	}
+
+        timeOfLastLook = Time.timeSinceLevelLoad;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -41,6 +46,8 @@ public class Sensor : MonoBehaviour {
             {
                 Debug.Log(gameObject.name + "  has been lookAtTriggered!");
                 lookedAt.Invoke();
+                lookAtTimePassed = 0;
+                timeOfLastLook = Time.timeSinceLevelLoad;
             }
             else if (lookAtTimePassed > 0f)
             {
@@ -52,8 +59,13 @@ public class Sensor : MonoBehaviour {
 
     public void OnLookedAt()
     {
-        lookAtTimePassed += Time.deltaTime;
-//        Debug.Log("someone is looking at us! " + lookAtTimePassed);
+        // we can only register a look if there has been a delay since the last look
+        if (Time.timeSinceLevelLoad > (timeOfLastLook + timeBetweenLooks))
+        {
+            lookAtTimePassed += Time.deltaTime;
+            //        Debug.Log("someone is looking at us! " + lookAtTimePassed);
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

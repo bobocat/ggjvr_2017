@@ -5,7 +5,7 @@ using UnityEngine.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public List<Chapter> sectionList = new List<Chapter>();
+    public List<Chapter> chapterList = new List<Chapter>();
 
 	// Use this for initialization
 	void Start () {
@@ -16,4 +16,21 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void CompleteCondition(string conditionName)
+    {
+        Debug.Log("completing condition: " + conditionName);
+
+        foreach (Chapter chapter in chapterList)
+        {
+            foreach (Condition condition in chapter.conditions)
+            {
+                if (condition.name == conditionName)
+                {
+                    condition.complete = true;
+                }
+            }
+        }
+    }
+
 }
