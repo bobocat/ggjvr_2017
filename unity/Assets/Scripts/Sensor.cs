@@ -48,6 +48,7 @@ public class Sensor : MonoBehaviour {
                 lookedAt.Invoke();
                 lookAtTimePassed = 0;
                 timeOfLastLook = Time.timeSinceLevelLoad;
+                triggerCount++;
             }
             else if (lookAtTimePassed > 0f)
             {

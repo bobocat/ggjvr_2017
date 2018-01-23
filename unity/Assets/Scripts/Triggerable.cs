@@ -7,6 +7,7 @@ public class Triggerable : MonoBehaviour {
 
     public UnityEvent onActivated;          // this gets fired when we hit our trigger threshold
 
+    [Tooltip("when we have been triggered this many times then we fire our OnActivated")]
     public int triggersToActivate = 1;      // when we have been triggered this many times then we fire our OnActivated
     public int triggerCount = 0;            // track how many times we have been triggered
 
@@ -32,6 +33,7 @@ public class Triggerable : MonoBehaviour {
         if (triggerCount >= triggersToActivate)
         {
             onActivated.Invoke();
+            ResetTriggers();
         }
     }
 }

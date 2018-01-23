@@ -136,9 +136,13 @@ public class TextBubble : MonoBehaviour {
         timeUntilHide = currentChapterGroup.textMessageList[messageIndex].delay;
 
         // reset the message index if we have hit the end of the messages
-        if (messageIndex >= currentChapterGroup.textMessageList.Count)
+        if (messageIndex >= currentChapterGroup.textMessageList.Count-1)
         {
             messageIndex = 0;
+        }
+        else
+        {
+            messageIndex++;
         }
 
     }
