@@ -23,3 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/farmhouse.unity
     guid: 0b3a0b365a4d8c84d98ebdde65fe5e3a
+  - enabled: 0
+    path: Assets/VRTK/Examples/044_CameraRig_RestrictedTeleportZones.unity
+    guid: bd7af403def3edb458ff7277c7838194
+  - enabled: 0
+    path: Assets/VRTK/Examples/027_CameraRig_TeleportByModelVillage.unity
+    guid: fb0f6782109195b4ba5c1378137cde23

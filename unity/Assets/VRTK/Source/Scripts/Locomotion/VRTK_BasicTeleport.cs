@@ -41,6 +41,10 @@ namespace VRTK
         [Tooltip("Determines how long the fade will stay present out depending on the distance being teleported. A value of `0` will not delay the teleport fade effect over any distance, a max value will delay the teleport fade in even when the distance teleported is very close to the original position.")]
         [Range(0f, 32f)]
         public float distanceBlinkDelay = 0f;
+        [Tooltip("The time to fade in after a teleport")]
+        public float unFadeTime = 1f;
+        [Tooltip("The time to stay dark before fading back in")]
+        public float unFadeDelay = 1f;
         [Tooltip("If this is checked then the teleported location will be the position of the headset within the play area. If it is unchecked then the teleported location will always be the centre of the play area even if the headset position is not in the centre of the play area.")]
         public bool headsetPositionCompensation = true;
         [Tooltip("A specified VRTK_PolicyList to use to determine whether destination targets will be acted upon by the teleporter.")]
@@ -251,7 +255,8 @@ namespace VRTK
             {
                 VRTK_SDK_Bridge.HeadsetFade(blinkToColor, 0);
             }
-            Invoke("ReleaseBlink", blinkPause);
+//            Invoke("ReleaseBlink", blinkPause);
+            Invoke("ReleaseBlink", unFadeDelay);
         }
 
         protected virtual DestinationMarkerEventArgs BuildTeleportArgs(Transform target, Vector3 destinationPosition, Quaternion? destinationRotation = null, bool forceDestinationPosition = false)
@@ -408,7 +413,8 @@ namespace VRTK
 
         protected virtual void ReleaseBlink()
         {
-            VRTK_SDK_Bridge.HeadsetFade(Color.clear, fadeInTime);
+            //            VRTK_SDK_Bridge.HeadsetFade(Color.clear, fadeInTime);
+            VRTK_SDK_Bridge.HeadsetFade(Color.clear, unFadeTime);
             fadeInTime = 0f;
         }
 
