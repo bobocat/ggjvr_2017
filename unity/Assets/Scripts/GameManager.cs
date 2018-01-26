@@ -14,10 +14,13 @@ public class GameManager : MonoBehaviour {
     public Transform MollonkaStart;
     public Transform DeathStart;
     public Transform FatherStart;
+    public Transform theVoid;               // a safe area where the headBall won't run into anything
 
     public VRTK.VRTK_BasicTeleport teleporter;
 
-    public DestinationMarker marker;
+    //    public DestinationMarker marker;
+
+    public Animator titleAnimator;          // anim controller for the titles
 
     public Transform sceneScaleObject;      // the object that we will scale to change the scene scale. top of the environment hierarchy
 
@@ -25,22 +28,82 @@ public class GameManager : MonoBehaviour {
     private float sceneScaleDeath = 1.4f;
     private float sceneScaleFather = 1f;
 
+    private HeadBall headBall;              // the black sphere over the player's head that we use for fades. This allows us to have text overlays inside it.
+
     private void Awake()
     {
         UpdateChapter();
+
+        headBall = GameObject.FindObjectOfType<HeadBall>();
 
     }
 
     // Use this for initialization
     void Start () {
 
+
+
+//        headBall.FadeToBlack();
+        StartCoroutine(TitlesOpening());
+
+//        Invoke("Fade", 6f);
+
 //        Invoke("ChangeToMollonka", 6f);
 
-        Invoke("ChangeToDeath", 6f);
+//        Invoke("ChangeToDeath", 6f);
 
-        Invoke("ChangeToFather", 16f);
+//        Invoke("ChangeToFather", 16f);
 
 
+    }
+
+    IEnumerator TitlesOpening()
+    {
+
+        Debug.Log("titles opening 1");
+
+        yield return new WaitForSeconds(1);
+
+        //teleporter.ForceTeleport(theVoid.position);
+//        TeleportFast(theVoid);
+
+        Debug.Log("titles opening 2");
+
+//        headBall.SetToBlack();
+
+        yield return new WaitForSeconds(6);
+
+        Debug.Log("titles opening 3");
+
+        // start with a black screen
+        //        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
+
+        //        yield return new WaitForSeconds(3);
+
+        titleAnimator.Play("title_mollonka");
+        yield return new WaitForSeconds(8);
+
+        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
+
+        TeleportFast(MollonkaStart);
+
+//        headBall.SetToClear();
+
+        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
+
+        //        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
+
+        Debug.Log("titles opening 6");
+
+    }
+
+    void TeleportFast(Transform destination)
+    {
+        Quaternion q = Quaternion.Inverse(VRTK.VRTK_DeviceFinder.HeadsetTransform().rotation) * destination.rotation;
+
+        teleporter.Teleport(destination, destination.position, q, true);
+
+        Debug.Log("teleporting fast");
     }
 
 
@@ -59,8 +122,9 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log("teleporting");
 
-//        GetComponent<VRTK_HeadsetFade>().Unfade(5f);
+        //        GetComponent<VRTK_HeadsetFade>().Unfade(5f);
 
+//        return null;
 
     }
 
@@ -92,19 +156,19 @@ public class GameManager : MonoBehaviour {
         SetSceneScale(sceneScaleFather);
     }
 
+    /*
+        void Teleport()
+        {
 
-    void Teleport()
-    {
+            Quaternion q = Quaternion.Inverse(VRTK.VRTK_DeviceFinder.HeadsetTransform().rotation) * MollonkaStart.rotation;
 
-        Quaternion q = Quaternion.Inverse(VRTK.VRTK_DeviceFinder.HeadsetTransform().rotation) * MollonkaStart.rotation;
+            teleporter.Teleport(MollonkaStart,MollonkaStart.position,q,true);
 
-        teleporter.Teleport(MollonkaStart,MollonkaStart.position,q,true);
+            Debug.Log("teleporting");
 
-        Debug.Log("teleporting");
-
-        GetComponent<VRTK_HeadsetFade>().Unfade(.3f);
-    }
-
+            GetComponent<VRTK_HeadsetFade>().Unfade(.3f);
+        }
+    */
     void Fade()
     {
 

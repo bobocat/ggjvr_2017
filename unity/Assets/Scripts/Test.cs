@@ -13,8 +13,11 @@ public class Test : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+
+        Debug.Log("test"+gameObject.name);
+        
 	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,6 +26,24 @@ public class Test : MonoBehaviour {
 		
 	}
 
+/*
+    private Quaternion SetOffsetQuaternian(Quaternion playerQ, Quaternion targetQ)
+    {
+        Quaternion offsetQ;
+
+        // this gets the difference between the playerQ and the targetQ
+        Quaternion diffNeededQ = Quaternion.Inverse(playerQ) * targetQ;
+
+        diffNeeded.rotation = diffNeededY;
+
+        // now the newPos object will be rotated to the player + diffNeeded object
+
+        newPos.rotation = player.rotation * diffNeeded.rotation;
+
+        return offsetQ;
+
+    }
+*/
 
     private void QuaternianTest()
     {
