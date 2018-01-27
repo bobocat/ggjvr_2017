@@ -46,10 +46,12 @@ public class GameManager : MonoBehaviour {
 
         Invoke("GetCameraRefs", 1f);
 
+        Invoke("QuickStart", 2f);
+
 //        headBall.FadeToBlack();
 //        StartCoroutine(TitlesOpening());
 
-        Invoke("Test", 3f);
+//        Invoke("Test", 3f);
 
 //        Invoke("Fade", 6f);
 
@@ -62,6 +64,11 @@ public class GameManager : MonoBehaviour {
 
     }
 
+
+    void QuickStart()
+    {
+        TeleportBrute(MollonkaStart);
+    }
 
     void GetCameraRefs()
     {
@@ -252,6 +259,7 @@ public class GameManager : MonoBehaviour {
 
     public void CompleteCondition(string conditionName)
     {
+        if (conditionName == "") conditionName = "none";
         Debug.Log("completing condition: " + conditionName);
 
         foreach (Chapter chapter in chapterList)

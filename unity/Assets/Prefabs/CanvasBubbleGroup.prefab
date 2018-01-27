@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114520494371691688}
   - component: {fileID: 114253287067476916}
   m_Layer: 5
-  m_Name: speechbubble_father
+  m_Name: speechbubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
