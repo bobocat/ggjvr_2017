@@ -47,9 +47,9 @@ public class GameManager : MonoBehaviour {
         Invoke("GetCameraRefs", 1f);
 
 //        headBall.FadeToBlack();
-//        StartCoroutine(TitlesOpening());
+        StartCoroutine(TitlesOpening());
 
-        Invoke("Test", 3f);
+//        Invoke("Test", 3f);
 
 //        Invoke("Fade", 6f);
 
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour {
         Debug.Log("titles opening 3");
 
         // start with a black screen
-        //        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
+        //GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
 
         //        yield return new WaitForSeconds(3);
 
@@ -111,6 +111,12 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log("titles opening 6");
 
+        yield return new WaitForSeconds(1f);
+        TeleportBrute(DeathStart);
+
+        yield return new WaitForSeconds(1f);
+        TeleportBrute(FatherStart);
+
     }
 
     void Test()
@@ -121,16 +127,15 @@ public class GameManager : MonoBehaviour {
     void TeleportBrute(Transform destination)
     {
 
-//        Debug.Log("playspace position: " + playspace.position);
-//        Debug.Log("target position: " + destination.position);
-
         // move the playspace to where the player is
         Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
         playspace.Translate(headset.localPosition);
 
         // rotate to the new desired rotation
-        float newRot = headset.localEulerAngles.y - playspace.localEulerAngles.y;
+        float newRot = destination.eulerAngles.y - playspace.localEulerAngles.y;
+
         playspace.Rotate(0f, newRot, 0f);
+
 
         // move the playspace to the target location
         playspace.position = destination.position;
