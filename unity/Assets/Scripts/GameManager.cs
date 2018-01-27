@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour {
 
     private HeadBall headBall;              // the black sphere over the player's head that we use for fades. This allows us to have text overlays inside it.
 
+    private Transform playspace;
+    private Transform headset;
+
     private void Awake()
     {
         UpdateChapter();
@@ -41,10 +44,12 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-
+        Invoke("GetCameraRefs", 1f);
 
 //        headBall.FadeToBlack();
-        StartCoroutine(TitlesOpening());
+//        StartCoroutine(TitlesOpening());
+
+        Invoke("Test", 3f);
 
 //        Invoke("Fade", 6f);
 
@@ -57,10 +62,20 @@ public class GameManager : MonoBehaviour {
 
     }
 
+
+    void GetCameraRefs()
+    {
+        playspace = FindObjectOfType<PlayspaceGrabber>().transform;
+        //headset = Camera.main.transform;
+        headset = FindObjectOfType<HeadsetGrabber>().transform;
+
+        Debug.Log("headset is " + headset.gameObject.name);
+    }
+
     IEnumerator TitlesOpening()
     {
 
-        Debug.Log("titles opening 1");
+        Debug.Log("titles opening 1a");
 
         yield return new WaitForSeconds(1);
 
@@ -83,17 +98,45 @@ public class GameManager : MonoBehaviour {
         titleAnimator.Play("title_mollonka");
         yield return new WaitForSeconds(8);
 
-        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
+//        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
 
-        TeleportFast(MollonkaStart);
+        //        TeleportFast(MollonkaStart);
+        TeleportBrute(MollonkaStart);
 
-//        headBall.SetToClear();
+        //        headBall.SetToClear();
 
-        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
+//        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
 
         //        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
 
         Debug.Log("titles opening 6");
+
+    }
+
+    void Test()
+    {
+        TeleportBrute(MollonkaStart);
+    }
+
+    void TeleportBrute(Transform destination)
+    {
+
+//        Debug.Log("playspace position: " + playspace.position);
+//        Debug.Log("target position: " + destination.position);
+
+        // move the playspace to where the player is
+        Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
+        playspace.Translate(headset.localPosition);
+
+        // rotate to the new desired rotation
+        float newRot = headset.localEulerAngles.y - playspace.localEulerAngles.y;
+        playspace.Rotate(0f, newRot, 0f);
+
+        // move the playspace to the target location
+        playspace.position = destination.position;
+
+        // move the playspace the opposite of the first move to fix the player's location
+        playspace.Translate(offset);
 
     }
 
