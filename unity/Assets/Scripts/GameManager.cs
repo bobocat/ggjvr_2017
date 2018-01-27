@@ -79,9 +79,6 @@ public class GameManager : MonoBehaviour {
 
         yield return new WaitForSeconds(1);
 
-        //teleporter.ForceTeleport(theVoid.position);
-//        TeleportFast(theVoid);
-
         Debug.Log("titles opening 2");
 
 //        headBall.SetToBlack();
@@ -111,11 +108,11 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log("titles opening 6");
 
-        yield return new WaitForSeconds(1f);
-        TeleportBrute(DeathStart);
+//        yield return new WaitForSeconds(3f);
+//        TeleportBrute(DeathStart);
 
-        yield return new WaitForSeconds(1f);
-        TeleportBrute(FatherStart);
+//        yield return new WaitForSeconds(3f);
+//        TeleportBrute(FatherStart);
 
     }
 
@@ -128,12 +125,14 @@ public class GameManager : MonoBehaviour {
     {
 
         // move the playspace to where the player is
-        Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
-        playspace.Translate(headset.localPosition);
+        //        Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
+        //        playspace.Translate(headset.localPosition);
+
+//        Debug.Log("localpos: "+headset.localPosition);
 
         // rotate to the new desired rotation
         float newRot = destination.eulerAngles.y - playspace.localEulerAngles.y;
-
+//        playspace.eulerAngles = Vector3.zero;
         playspace.Rotate(0f, newRot, 0f);
 
 
@@ -141,7 +140,7 @@ public class GameManager : MonoBehaviour {
         playspace.position = destination.position;
 
         // move the playspace the opposite of the first move to fix the player's location
-        playspace.Translate(offset);
+//        playspace.Translate(offset);
 
     }
 
