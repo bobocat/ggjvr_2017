@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour {
 
         Invoke("GetCameraRefs", 1f);
 
-//        Invoke("QuickStart", 2f);
+        Invoke("QuickStart", 2f);
 
 //        headBall.FadeToBlack();
 //        StartCoroutine(TitlesOpening());

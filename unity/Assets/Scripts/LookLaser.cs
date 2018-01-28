@@ -6,6 +6,8 @@ public class LookLaser : MonoBehaviour {
 
     public bool useLookat = false;
 
+    private float distanceToSensor;
+
     // Use this for initialization
     void Start () {
 		
@@ -30,7 +32,10 @@ public class LookLaser : MonoBehaviour {
 
                 if (hit.collider.GetComponent<Sensor>() != null)
                 {
-                    hit.collider.GetComponent<Sensor>().OnLookedAt();
+                    // figure out how far we are from the sensor
+                    distanceToSensor = Vector3.Distance(transform.position, hit.transform.position);
+
+                    hit.collider.GetComponent<Sensor>().OnLookedAt(distanceToSensor);
                 }
 
             }

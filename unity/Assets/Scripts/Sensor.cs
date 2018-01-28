@@ -18,6 +18,8 @@ public class Sensor : MonoBehaviour {
     public float timeBetweenLooks = 3f;     // how long after a look has finished can we register another look?
     private float timeOfLastLook = 0f;      // when was our last look completed?
 
+    private float lookAtDistance = 1.5f;      // you have to be this close to activate the sensor
+
     public UnityEvent lookedAt;
 
     public UnityEvent grabbed;
@@ -58,12 +60,19 @@ public class Sensor : MonoBehaviour {
 
     }
 
-    public void OnLookedAt()
+    // this gets trigger by the laser that is attached to the player!
+    public void OnLookedAt(float distanceToPlayer)
     {
+//        Debug.Log("dist: " + distanceToPlayer);
+
         // we can only register a look if there has been a delay since the last look
         if (Time.timeSinceLevelLoad > (timeOfLastLook + timeBetweenLooks))
         {
-            lookAtTimePassed += Time.deltaTime;
+            // only activate within the lookAtDistance
+            if (distanceToPlayer < lookAtDistance)
+            {
+                lookAtTimePassed += Time.deltaTime;
+            }
             //        Debug.Log("someone is looking at us! " + lookAtTimePassed);
         }
 
