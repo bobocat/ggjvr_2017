@@ -10,27 +10,55 @@ ModelImporter:
     100004: Untitled_45_DoubleTaperedMarker_geo
     100006: Untitled_45_TaperedMarker_geo
     100008: Untitled_45_Toon_geo
+    100010: group1
+    100012: mollbraid
+    100014: mollbraid1
+    100016: mollhand
+    100018: mollhand1
+    100020: transform2
+    100022: Untitled_45_1_DoubleTaperedFlat_geo
     400000: //RootNode
     400002: Untitled_45_DoubleTaperedFlat_geo
     400004: Untitled_45_DoubleTaperedMarker_geo
     400006: Untitled_45_TaperedMarker_geo
     400008: Untitled_45_Toon_geo
+    400010: group1
+    400012: mollbraid
+    400014: mollbraid1
+    400016: mollhand
+    400018: mollhand1
+    400020: transform2
+    400022: Untitled_45_1_DoubleTaperedFlat_geo
     2100000: 4391385adf7343969e3331e4e4930b27_Toon
     2100002: 0d3889f33ede470c8af4f44813306126_DoubleTaperedFlat
     2100004: 0d3889f33ede470c8af4de4813306126_DoubleTaperedMarker
     2100006: d90c6ad8af0f4b54b422e0f92abe1b3c_TaperedMarker
+    2100008: 4391385adf7343969e3331e4e4930b27_Toon1
+    2100010: 0d3889f33ede470c8af4f44813306126_DoubleTaperedFlat1
     2300000: Untitled_45_DoubleTaperedFlat_geo
     2300002: Untitled_45_DoubleTaperedMarker_geo
     2300004: Untitled_45_TaperedMarker_geo
     2300006: Untitled_45_Toon_geo
+    2300008: mollbraid
+    2300010: mollbraid1
+    2300012: mollhand
+    2300014: mollhand1
     3300000: Untitled_45_DoubleTaperedFlat_geo
     3300002: Untitled_45_DoubleTaperedMarker_geo
     3300004: Untitled_45_TaperedMarker_geo
     3300006: Untitled_45_Toon_geo
+    3300008: mollbraid
+    3300010: mollbraid1
+    3300012: mollhand
+    3300014: mollhand1
     4300000: Untitled_45_Toon_geo
     4300002: Untitled_45_DoubleTaperedFlat_geo
     4300004: Untitled_45_DoubleTaperedMarker_geo
     4300006: Untitled_45_TaperedMarker_geo
+    4300008: mollhand
+    4300010: mollbraid
+    4300012: mollbraid1
+    4300014: mollhand1
     9500000: //RootNode
   externalObjects: {}
   materials:

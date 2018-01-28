@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Collections;
 using VRTK;
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
     //    public DestinationMarker marker;
 
     public Animator titleAnimator;          // anim controller for the titles
+    public Text titleText;                  // text of the titles
 
     public Transform sceneScaleObject;      // the object that we will scale to change the scene scale. top of the environment hierarchy
 
@@ -33,6 +35,8 @@ public class GameManager : MonoBehaviour {
     private Transform playspace;
     private Transform headset;
 
+    public Transform startGameGroup;        // this is some stuff that we should only see at the start of the game
+
     private void Awake()
     {
         UpdateChapter();
@@ -44,12 +48,15 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+
+        startGameGroup.gameObject.SetActive(true);
+
         Invoke("GetCameraRefs", 1f);
 
-        Invoke("QuickStart", 2f);
+//        Invoke("QuickStart", 2f);
 
 //        headBall.FadeToBlack();
-        StartCoroutine(TitlesOpening());
+//        StartCoroutine(TitlesOpening());
 
 //        Invoke("Test", 3f);
 
@@ -74,35 +81,48 @@ public class GameManager : MonoBehaviour {
     {
         playspace = FindObjectOfType<PlayspaceGrabber>().transform;
         //headset = Camera.main.transform;
-        headset = FindObjectOfType<HeadsetGrabber>().transform;
+        try
+        {
+            headset = FindObjectOfType<HeadsetGrabber>().transform;
+        }
+        catch
+        {
 
-        Debug.Log("headset is " + headset.gameObject.name);
+        }
+
+    }
+
+    public void RunOpeningSequence()
+    {
+        StartCoroutine(TitlesOpening());
     }
 
     IEnumerator TitlesOpening()
     {
 
-        Debug.Log("titles opening 1a");
+
+        startGameGroup.gameObject.SetActive(false);
+
+//        Debug.Log("title 1");
+//        yield return new WaitForSeconds(1);
+
+        //        TeleportBrute(theVoid);
+
+//        startGameGroup.gameObject.SetActive(true);
+
+        //        headBall.SetToBlack();
 
         yield return new WaitForSeconds(1);
 
-        TeleportBrute(theVoid);
-
-
-        Debug.Log("titles opening 2");
-
-//        headBall.SetToBlack();
-
-        yield return new WaitForSeconds(6);
-
-        Debug.Log("titles opening 3");
 
         // start with a black screen
         //GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
 
         //        yield return new WaitForSeconds(3);
 
-        titleAnimator.Play("title_mollonka");
+        PlayTitle("Mollonka");
+        //titleAnimator.Play("title_mollonka");
+
         yield return new WaitForSeconds(8);
 
 //        GetComponent<VRTK_HeadsetFade>().Fade(Color.black, 0f);
@@ -112,18 +132,24 @@ public class GameManager : MonoBehaviour {
 
         //        headBall.SetToClear();
 
-//        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
+        //        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
 
         //        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
 
-        Debug.Log("titles opening 6");
 
-//        yield return new WaitForSeconds(3f);
-//        TeleportBrute(DeathStart);
+        //        yield return new WaitForSeconds(3f);
+        //        TeleportBrute(DeathStart);
 
-//        yield return new WaitForSeconds(3f);
-//        TeleportBrute(FatherStart);
+        //        yield return new WaitForSeconds(3f);
+        //        TeleportBrute(FatherStart);
 
+
+    }
+
+    void PlayTitle(string txt)
+    {
+        titleText.text = txt;        
+        titleAnimator.Play("title_mollonka");
     }
 
     void Test()
@@ -134,11 +160,16 @@ public class GameManager : MonoBehaviour {
     void TeleportBrute(Transform destination)
     {
 
-        // move the playspace to where the player is
-        //        Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
-        //        playspace.Translate(headset.localPosition);
+        Vector3 offset = new Vector3(playspace.localPosition.x * -1f, playspace.localPosition.y, playspace.localPosition.z * -1f);
 
-//        Debug.Log("localpos: "+headset.localPosition);
+        // move the playspace to where the player is (only if this isn't the simulator)
+        if (headset != null)
+        {
+            Debug.Log("headset detected");
+            playspace.Translate(headset.localPosition);
+        }
+
+        //        Debug.Log("localpos: "+headset.localPosition);
 
         // rotate to the new desired rotation
         float newRot = destination.eulerAngles.y - playspace.localEulerAngles.y;
@@ -150,7 +181,11 @@ public class GameManager : MonoBehaviour {
         playspace.position = destination.position;
 
         // move the playspace the opposite of the first move to fix the player's location
-//        playspace.Translate(offset);
+        if (headset != null)
+        {
+            Debug.Log("headset detected");
+            playspace.Translate(offset);
+        }
 
     }
 
