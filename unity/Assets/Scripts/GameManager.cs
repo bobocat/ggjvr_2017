@@ -86,6 +86,9 @@ public class GameManager : MonoBehaviour {
 
         yield return new WaitForSeconds(1);
 
+        TeleportBrute(theVoid);
+
+
         Debug.Log("titles opening 2");
 
 //        headBall.SetToBlack();

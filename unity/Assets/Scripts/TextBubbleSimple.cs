@@ -56,7 +56,7 @@ public class TextBubbleSimple : MonoBehaviour {
     {
 
         Debug.Log(text);
-        textField.text = text;
+        textField.text = text.Replace("|","\n");
 
         ShowBubble();
 
