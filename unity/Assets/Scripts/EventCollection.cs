@@ -16,6 +16,8 @@ public class EventCollection : MonoBehaviour{
     public Animator anim;
     public AudioSource audioSource;
 
+    public bool loop = false;           // should we reset all the completes and start again?
+
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -25,8 +27,37 @@ public class EventCollection : MonoBehaviour{
 
     }
 
-    public void TriggerEvent()
+    // reset all the complete triggers
+    public void Reset()
     {
+        foreach (EventGroup eventGroup in eventGroupList)
+        {
+            eventGroup.complete = false;
+        }
+    }
+
+
+    private bool CheckAllComplete()
+    {
+        bool allComplete = true;
+
+        foreach (EventGroup eventGroup in eventGroupList)
+        {
+            if (eventGroup.complete == false)
+            {
+                allComplete = false;
+            }
+        }
+
+        Debug.Log("checking complete: " + allComplete);
+
+        return allComplete;
+
+    }
+
+        public void TriggerEvent()
+    {
+
         // go through the events in the list
         foreach (EventGroup eventGroup in eventGroupList)
         {
@@ -42,6 +73,8 @@ public class EventCollection : MonoBehaviour{
                 // mark the event as complete
                 eventGroup.complete = true;
 
+                Debug.Log("event collection event complete");
+
                 // update the condition in the gameManager
                 gameManager.CompleteCondition(eventGroup.gmCondition);
 
@@ -49,6 +82,8 @@ public class EventCollection : MonoBehaviour{
             }
 
         }
+
+        if (loop && (CheckAllComplete() == true)) Reset();
 
     }
 

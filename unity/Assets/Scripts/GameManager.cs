@@ -9,12 +9,20 @@ public class GameManager : MonoBehaviour {
 
     public List<Chapter> chapterList = new List<Chapter>();
 
-    public string currentChapter;
-    public int currentChapterIndex;
+    public List<ChapterControl> chapterObjectList = new List<ChapterControl>();
+
+    public G.chapterType currentChapter;
+
+
+    public List<Condition> conditionList = new List<Condition>();
+
+//    public string currentChapter;
+//    public int currentChapterIndex;
 
     public Transform MollonkaStart;
     public Transform DeathStart;
     public Transform FatherStart;
+    public Transform WeddingStart;
     public Transform theVoid;               // a safe area where the headBall won't run into anything
 
     public VRTK.VRTK_BasicTeleport teleporter;
@@ -39,7 +47,7 @@ public class GameManager : MonoBehaviour {
 
     private void Awake()
     {
-        UpdateChapter();
+//        UpdateChapter();
 
         headBall = GameObject.FindObjectOfType<HeadBall>();
 
@@ -48,25 +56,33 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        SetChapter(G.chapterType.tutorial);
 
         startGameGroup.gameObject.SetActive(true);
 
         Invoke("GetCameraRefs", 1f);
 
-        Invoke("QuickStart", 2f);
+        // build the chapter list
+        ChapterControl [] ccList  = FindObjectsOfType<ChapterControl>();
+        foreach (ChapterControl cc in ccList)
+        {
+            chapterObjectList.Add(cc);
+        }
 
-//        headBall.FadeToBlack();
+        //        headBall.FadeToBlack();
+
+        //        Invoke("QuickStart", 2f);
 //        StartCoroutine(TitlesOpening());
 
-//        Invoke("Test", 3f);
+        //        Invoke("Test", 3f);
 
-//        Invoke("Fade", 6f);
+        //        Invoke("Fade", 6f);
 
-//        Invoke("ChangeToMollonka", 6f);
+        //        Invoke("ChangeToMollonka", 6f);
 
-//        Invoke("ChangeToDeath", 6f);
+        //        Invoke("ChangeToDeath", 6f);
 
-//        Invoke("ChangeToFather", 16f);
+        //        Invoke("ChangeToFather", 16f);
 
 
     }
@@ -75,6 +91,79 @@ public class GameManager : MonoBehaviour {
     void QuickStart()
     {
         TeleportBrute(MollonkaStart);
+        SetChapter(G.chapterType.mollonka);
+    }
+
+    bool CheckCondition(string conditionName)
+    {
+        bool status = false;
+
+        foreach (Condition condition in conditionList)
+        {
+            if (condition.name == conditionName)
+            {
+                if (condition.complete)
+                {
+                    status = true;
+                }
+            }
+        }
+
+        return status;
+    }
+
+    void CheckChapterAdvance()
+    {
+
+        if (currentChapter == G.chapterType.mollonka)
+        {
+            if (CheckCondition("FatherMessages") && CheckCondition("WeddingMessages"))
+            {
+                SetChapter(G.chapterType.visions);
+            }
+        }
+        else if (currentChapter == G.chapterType.visions)
+        {
+            if (CheckCondition("SawVision"))
+            {
+                SetChapter(G.chapterType.death);
+                StartCoroutine(DeathOpening());
+            }
+        }
+        else if (currentChapter == G.chapterType.death)
+        {
+            if (CheckCondition("GaveEgg"))
+            {
+                SetChapter(G.chapterType.father);
+                StartCoroutine(FatherOpening());
+            }
+        }
+        else if (currentChapter == G.chapterType.father)
+        {
+            if (CheckCondition("LookedEgg"))
+            {
+                SetChapter(G.chapterType.wedding);
+                StartCoroutine(WeddingOpening());
+            }
+        }
+
+    }
+
+    void SetChapter(G.chapterType newChapter)
+    {
+        foreach (ChapterControl cc in chapterObjectList)
+        {
+            if (cc.chapter == newChapter)
+            {
+                cc.gameObject.SetActive(true);
+            }
+            else
+            {
+                cc.gameObject.SetActive(false);
+            }
+        }
+
+        currentChapter = newChapter;
     }
 
     void GetCameraRefs()
@@ -130,6 +219,8 @@ public class GameManager : MonoBehaviour {
         //        TeleportFast(MollonkaStart);
         TeleportBrute(MollonkaStart);
 
+        SetChapter(G.chapterType.mollonka);
+
         //        headBall.SetToClear();
 
         //        GetComponent<VRTK_HeadsetFade>().Unfade(3f);
@@ -145,6 +236,52 @@ public class GameManager : MonoBehaviour {
 
 
     }
+
+    IEnumerator DeathOpening()
+    {
+
+        startGameGroup.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1);
+
+
+        PlayTitle("Death");
+
+        yield return new WaitForSeconds(8);
+
+        TeleportBrute(DeathStart);
+
+    }
+
+
+    IEnumerator FatherOpening()
+    {
+
+        yield return new WaitForSeconds(1);
+
+
+        PlayTitle("Papa");
+
+        yield return new WaitForSeconds(8);
+
+        TeleportBrute(FatherStart);
+
+    }
+
+    IEnumerator WeddingOpening()
+    {
+
+        yield return new WaitForSeconds(1);
+
+//        PlayTitle("Papa");
+
+        yield return new WaitForSeconds(8);
+
+        TeleportBrute(WeddingStart);
+
+    }
+
+
 
     void PlayTitle(string txt)
     {
@@ -277,49 +414,67 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-    // look at the current conditions and figure out what chapter we are in
-    void UpdateChapter()
-    {
-        Debug.Log("updating chapter in gameManager");
-
-        // if we don't find any incomplete chapters than we will return an all complete
-        currentChapter = "allComplete";
-
-        // go through the chapters in reverse order to see what the highest incomplete one is
-        for (int i = chapterList.Count-1; i >= 0; i--)
+    /*
+        // look at the current conditions and figure out what chapter we are in
+        void UpdateChapter()
         {
-            if (chapterList[i].complete == false)
+            Debug.Log("updating chapter in gameManager");
+
+            // if we don't find any incomplete chapters than we will return an all complete
+            currentChapter = "allComplete";
+
+            // go through the chapters in reverse order to see what the highest incomplete one is
+            for (int i = chapterList.Count-1; i >= 0; i--)
             {
-                currentChapter = chapterList[i].name;
-                currentChapterIndex = i;
+                if (chapterList[i].complete == false)
+                {
+                    currentChapter = chapterList[i].name;
+                    currentChapterIndex = i;
+                }
             }
+
         }
-
-    }
-
-
+    */
 
     public void CompleteCondition(string conditionName)
     {
         if (conditionName == "") conditionName = "none";
         Debug.Log("completing condition: " + conditionName);
 
-        foreach (Chapter chapter in chapterList)
+        foreach (Condition condition in conditionList)
         {
-            foreach (Condition condition in chapter.conditions)
-            {
                 if (condition.name == conditionName)
                 {
                     condition.complete = true;
+
+                    CheckChapterAdvance();
                 }
-            }
         }
     }
 
-    public string GetCurrentChapter()
-    {
-        return currentChapter;
-    }
+    /*
+        public void CompleteCondition(string conditionName)
+        {
+            if (conditionName == "") conditionName = "none";
+            Debug.Log("completing condition: " + conditionName);
 
+            foreach (Chapter chapter in chapterList)
+            {
+                foreach (Condition condition in chapter.conditions)
+                {
+                    if (condition.name == conditionName)
+                    {
+                        condition.complete = true;
+                    }
+                }
+            }
+        }
+    */
+    /*
+        public string GetCurrentChapter()
+        {
+            return currentChapter;
+        }
+    */
 
 }

@@ -42,7 +42,7 @@ public class TextBubble : MonoBehaviour {
         try { gameManager = FindObjectOfType<GameManager>(); }
             catch { Debug.Log("missing gameManager in scene"); }
 
-        UpdateChapterGroup();           // set the chaptergroup to match the chapter set in the gameManager
+//        UpdateChapterGroup();           // set the chaptergroup to match the chapter set in the gameManager
 
         HideBubble();
         
@@ -88,7 +88,7 @@ public class TextBubble : MonoBehaviour {
         bubble.SetActive(false);
     }
 
-
+/*
     void UpdateChapterGroup()
     {
         Debug.Log("updating chapter group in TextBubble");
@@ -111,7 +111,7 @@ public class TextBubble : MonoBehaviour {
             }
         }
     }
-
+*/
     void ShowMessage(int index)
     {
 
@@ -122,6 +122,7 @@ public class TextBubble : MonoBehaviour {
 
     }
 
+/*
     // can cycle through a series of text
     public void NextMessage()
     {
@@ -146,7 +147,7 @@ public class TextBubble : MonoBehaviour {
         }
 
     }
-
+*/
     // can access the series randomly (but go through all of them)
     void RandomMessage()
     {
